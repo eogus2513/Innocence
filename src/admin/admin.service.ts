@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
 import { Repository } from 'typeorm';
 import { LoginRequest } from './dto/request/loginRequest.dto';
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
+import { SignUpRequest } from './dto/request/SignUpRequest.dto';
 
 @Injectable()
 export class AdminService {
@@ -24,14 +25,36 @@ export class AdminService {
     const accessToken = await this.jwtService.signAsync(
       {
         id: body.id,
-        access_exp: moment().hour(1).format('MM/DD/HH'),
+        access_exp: moment().hour(2).format('MM/DD/HH'),
       },
       {
         secret: process.env.JWT,
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
+    const refreshToken = await this.jwtService.signAsync(
+      {
+        id: body.id,
+        refresh_exp: moment().day(14).format('YYYY/MM/DD'),
+      },
+      {
+        secret: process.env.REFRESH_JWT,
+        expiresIn: `${process.env.REFRESH_EXP}s`,
+      },
+    );
 
-    return { accessToken };
+    return { accessToken, refreshToken };
+  }
+
+  async SignUp(body: SignUpRequest): Promise<void> {
+    if (await this.adminRepository.findOne({ id: body.id })) {
+      throw new BadRequestException();
+    }
+
+    await this.adminRepository.save({
+      id: body.id,
+      name: body.name,
+      password: await hash(body.password, 12),
+    });
   }
 }
