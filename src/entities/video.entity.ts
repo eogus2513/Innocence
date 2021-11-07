@@ -1,20 +1,19 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Video {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  category: number;
 
-    @Column()
-    category: number;
+  @Column()
+  subject: number;
 
-    @Column()
-    subject: number;
+  @Column()
+  video_address: string;
 
-    @Column()
-    video_address: string;
-
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 }

@@ -8,10 +8,10 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true
-    })
-  )
+      transform: true,
+    }),
+  );
   await app.listen(3000);
-  console.log("server ON!");
+  console.log('server ON!');
 }
 bootstrap();

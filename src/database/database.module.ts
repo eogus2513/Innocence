@@ -8,21 +8,21 @@ import { User } from 'src/entities/user.entity';
 import { Video } from 'src/entities/video.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService) => ({
-                type: 'mysql',
-                host: configService.get('DB_HOST'),
-                port: +configService.get<number>('DB_PORT'),
-                username: configService.get('DB_USERNAME'),
-                password: configService.get('DB_PASSWORD'),
-                database: configService.get('DB_DATABASE'),
-                entities: [User, Admin, Video, Category, Subject],
-                synchronize: true
-            })
-        })
-    ]
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        entities: [User, Admin, Video, Category, Subject],
+        synchronize: true,
+      }),
+    }),
+  ],
 })
 export class DatabaseModule {}
