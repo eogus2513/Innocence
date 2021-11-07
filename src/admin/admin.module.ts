@@ -6,17 +6,13 @@ import { Admin } from '../entities/admin.entity';
 import { AccessStrategy } from 'src/stratege/jwt-access.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { RefreshStrategy } from '../stratege/jwt-refresh.strategy';
 
 dotenv.config();
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Admin]),
-    JwtModule.register({
-      secret: process.env.ACCESS_JWT,
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([Admin]), JwtModule.register({})],
   controllers: [AdminController],
-  providers: [AdminService, AccessStrategy],
+  providers: [AdminService, AccessStrategy, RefreshStrategy],
 })
 export class AdminModule {}

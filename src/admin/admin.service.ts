@@ -18,8 +18,12 @@ export class AdminService {
   async Login(body: LoginRequest) {
     const user = await this.adminRepository.findOne({ id: body.id });
 
-    if (!user || !(await compare(body.password, user.password))) {
-      throw new BadRequestException();
+    if (!user) {
+      throw new BadRequestException('User Not Exist!');
+    }
+
+    if (!(await compare(body.password, user.password))) {
+      throw new BadRequestException('Password mismatch!');
     }
 
     const accessToken = await this.jwtService.signAsync(
@@ -28,7 +32,7 @@ export class AdminService {
         access_exp: moment().hour(2).format('MM/DD/HH'),
       },
       {
-        secret: process.env.JWT,
+        secret: process.env.ACCESS_JWT,
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
@@ -48,7 +52,7 @@ export class AdminService {
 
   async SignUp(body: SignUpRequest): Promise<void> {
     if (await this.adminRepository.findOne({ id: body.id })) {
-      throw new BadRequestException();
+      throw new BadRequestException('User Exist!');
     }
 
     await this.adminRepository.save({
