@@ -11,8 +11,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(3000);
-  console.log('SERVER START!');
+
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT);
+  console.log('server start! | ' + PORT);
 }
 
 bootstrap();
