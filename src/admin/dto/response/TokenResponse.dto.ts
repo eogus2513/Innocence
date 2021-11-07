@@ -2,8 +2,8 @@ import { IsString } from 'class-validator';
 
 export class TokenResponse {
   @IsString()
-  accessToken: string;
+  access_token: string;
 
   @IsString()
-  refreshToken: string;
+  refresh_token: string;
 }
