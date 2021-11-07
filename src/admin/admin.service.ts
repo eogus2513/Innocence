@@ -12,7 +12,7 @@ export class AdminService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async Login(body: LoginRequest) {
     const user = await this.adminRepository.findOne({ id: body.id });
@@ -21,12 +21,16 @@ export class AdminService {
       throw new BadRequestException();
     }
 
-    const accessToken = await this.jwtService.signAsync({
-      id: body.id, access_exp: moment().hour(1).format('MM/DD/HH')
-    }, {
-      secret: process.env.JWT,
-      expiresIn: `${process.env.ACCESS_EXP}s`
-    });
+    const accessToken = await this.jwtService.signAsync(
+      {
+        id: body.id,
+        access_exp: moment().hour(1).format('MM/DD/HH'),
+      },
+      {
+        secret: process.env.JWT,
+        expiresIn: `${process.env.ACCESS_EXP}s`,
+      },
+    );
 
     return { accessToken };
   }
