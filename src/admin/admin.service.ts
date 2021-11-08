@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  CACHE_MANAGER,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,14 +11,12 @@ import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { TokenResponse } from './dto/response/TokenResponse.dto';
-import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
     private readonly jwtService: JwtService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async Login(body: LoginRequest): Promise<TokenResponse> {
@@ -42,17 +38,6 @@ export class AdminService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
-    const refresh_token = await this.jwtService.signAsync(
-      {
-        id: body.id,
-        refresh_exp: moment().day(14).format('YYYY/MM/DD'),
-      },
-      {
-        secret: process.env.REFRESH_JWT,
-        expiresIn: `${process.env.REFRESH_EXP}s`,
-      },
-    );
-    await this.cacheManager.set(body.id, refresh_token, 1209600);
-    return { access_token, refresh_token };
+    return { access_token };
   }
 }
