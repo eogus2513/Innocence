@@ -1,19 +1,21 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({
+  name: 'tbl_video',
+})
 export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   category: number;
 
-  @Column()
+  @Column({ nullable: false })
   subject: number;
 
-  @Column()
+  @Column({ nullable: false })
   video_address: string;
 
-  @Column()
+  @Column({ nullable: false })
   title: string;
 }

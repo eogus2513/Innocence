@@ -1,13 +1,18 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({
+  name: 'tbl_admin',
+})
 export class Admin {
   @PrimaryColumn()
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
+
+  @Column({ nullable: false, default: true })
+  isAdmin: boolean;
 }
