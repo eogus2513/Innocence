@@ -3,6 +3,7 @@ import {
   CACHE_MANAGER,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
@@ -27,7 +28,7 @@ export class AdminService {
     const user = await this.adminRepository.findOne({ id: body.id });
 
     if (!user) {
-      throw new BadRequestException('User Not Exist!');
+      throw new NotFoundException('User Not Exist!');
     }
     if (!(await compare(body.password, user.password))) {
       throw new BadRequestException('Password mismatch!');
