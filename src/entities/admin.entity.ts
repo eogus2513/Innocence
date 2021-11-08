@@ -8,9 +8,6 @@ export class Admin {
   id: string;
 
   @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false })
   password: string;
 
   @Column({ nullable: false, default: true })

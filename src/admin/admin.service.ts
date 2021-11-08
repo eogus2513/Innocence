@@ -9,10 +9,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
 import { Repository } from 'typeorm';
 import { LoginRequest } from './dto/request/loginRequest.dto';
-import { compare, hash } from 'bcrypt';
+import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
-import { SignUpRequest } from './dto/request/SignUpRequest.dto';
 import { TokenResponse } from './dto/response/TokenResponse.dto';
 import { Cache } from 'cache-manager';
 
@@ -55,17 +54,5 @@ export class AdminService {
     );
     await this.cacheManager.set(body.id, refresh_token, 1209600);
     return { access_token, refresh_token };
-  }
-
-  async SignUp(body: SignUpRequest): Promise<void> {
-    if (await this.adminRepository.findOne({ id: body.id })) {
-      throw new BadRequestException('User Exist!');
-    }
-
-    await this.adminRepository.save({
-      id: body.id,
-      name: body.name,
-      password: await hash(body.password, 12),
-    });
   }
 }
