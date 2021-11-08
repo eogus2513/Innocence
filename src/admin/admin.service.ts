@@ -53,7 +53,7 @@ export class AdminService {
         expiresIn: `${process.env.REFRESH_EXP}s`,
       },
     );
-    await this.cacheManager.set(body.id, refresh_token);
+    await this.cacheManager.set(body.id, refresh_token, 1209600);
     return { access_token, refresh_token };
   }
 
