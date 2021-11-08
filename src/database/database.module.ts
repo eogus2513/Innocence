@@ -6,6 +6,7 @@ import { Category } from 'src/entities/category.entity';
 import { Subject } from 'src/entities/subject.entity';
 import { User } from 'src/entities/user.entity';
 import { Video } from 'src/entities/video.entity';
+import { Title } from '../entities/title.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Video } from 'src/entities/video.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User, Admin, Video, Category, Subject],
+        entities: [Admin, User, Category, Subject, Title, Video],
         synchronize: true,
       }),
     }),
