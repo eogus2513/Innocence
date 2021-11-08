@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Category } from './category.entity';
 
 @Entity({
   name: 'tbl_video',
@@ -9,14 +8,11 @@ export class Video {
   id: number;
 
   @Column({ nullable: false })
-  category: Category;
+  title_id: number;
 
   @Column({ nullable: false })
-  subject: number;
+  video_name: string;
 
   @Column({ nullable: false })
-  video_address: string;
-
-  @Column({ nullable: false })
-  title: string;
+  video_url: string;
 }

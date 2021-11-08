@@ -8,8 +8,8 @@ export class Subject {
   id: number;
 
   @Column({ nullable: false })
-  name: string;
+  subject_name: string;
 
   @Column({ nullable: false })
-  category: number;
+  category_id: number;
 }

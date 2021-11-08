@@ -8,5 +8,5 @@ export class Category {
   id: number;
 
   @Column({ nullable: false })
-  name: string;
+  category_name: string;
 }
