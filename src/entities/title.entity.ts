@@ -1,8 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Category } from './category.entity';
+import { Subject } from './subject.entity';
 
-@Entity({
-  name: 'tbl_title',
-})
+@Entity()
 export class Title {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,9 +16,11 @@ export class Title {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: false })
-  category_id: number;
+  @OneToOne(() => Category)
+  @JoinColumn()
+  category: Category;
 
-  @Column({ nullable: false })
-  subject_id: number;
+  @OneToOne(() => Subject)
+  @JoinColumn()
+  subject: Subject;
 }

@@ -1,8 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({
-  name: 'tbl_admin',
-})
+@Entity()
 export class Admin {
   @PrimaryColumn()
   id: string;
