@@ -1,14 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Title } from './title.entity';
 
-@Entity({
-  name: 'tbl_video',
-})
+@Entity()
 export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
-  title_id: number;
+  @JoinColumn()
+  title: Title;
 
   @Column({ nullable: false })
   video_name: string;

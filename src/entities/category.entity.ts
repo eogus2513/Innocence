@@ -1,12 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Subject } from './subject.entity';
+import { Title } from './title.entity';
 
-@Entity({
-  name: 'tbl_category',
-})
+@Entity()
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @OneToMany(() => Subject, (subject) => subject.category)
+  subject: Subject[];
+
+  @OneToMany(() => Title, (title) => title.category)
   @Column({ nullable: false })
   category_name: string;
 }
