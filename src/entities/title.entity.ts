@@ -2,7 +2,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+<<<<<<< HEAD
   ManyToOne,
+=======
+  OneToOne,
+>>>>>>> master
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
@@ -16,11 +20,19 @@ export class Title {
   @Column({ nullable: false })
   name: string;
 
+<<<<<<< HEAD
   @ManyToOne(() => Category, (category) => category.category_name)
   @JoinColumn()
   category: Category;
 
   @ManyToOne(() => Subject, (subject) => subject.subject_name)
+=======
+  @OneToOne(() => Category)
+  @JoinColumn()
+  category: Category;
+
+  @OneToOne(() => Subject)
+>>>>>>> master
   @JoinColumn()
   subject: Subject;
 }

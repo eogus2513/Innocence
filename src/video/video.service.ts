@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+<<<<<<< HEAD
 import { Repository } from 'typeorm';
 import { Title } from '../entities/title.entity';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
+=======
+import { Video } from '../entities/video.entity';
+import { Repository } from 'typeorm';
+>>>>>>> master
 
 @Injectable()
 export class VideoService {
   constructor(
+<<<<<<< HEAD
     @InjectRepository(Title) private titleRepository: Repository<Title>,
   ) {}
 
@@ -25,4 +31,8 @@ export class VideoService {
       .select(['title.name'])
       .getMany();
   }
+=======
+    @InjectRepository(Video) private videoRepository: Repository<Video>,
+  ) {}
+>>>>>>> master
 }

@@ -6,8 +6,13 @@ export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
+<<<<<<< HEAD
   @JoinColumn()
   title: Title;
+=======
+  @Column({ nullable: false })
+  title: number;
+>>>>>>> master
 
   @Column({ nullable: false })
   video_name: string;
