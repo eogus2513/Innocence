@@ -21,11 +21,11 @@ export class AdminService {
 
   async Login(body: LoginRequest): Promise<TokenResponse> {
     const user = await this.adminRepository.findOne({ id: body.id });
-
     if (!user) {
       throw new NotFoundException('User Not Exist!');
     }
-    if (!(await compare(body.password, user.password))) {
+
+    if (user.password != body.password) {
       throw new BadRequestException('Password mismatch!');
     }
     const access_token = await this.jwtService.signAsync(
@@ -38,6 +38,9 @@ export class AdminService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
+
     return { access_token };
   }
 }
+
+//!(await compare(body.password, user.password))
