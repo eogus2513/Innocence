@@ -33,7 +33,7 @@ export class VideoService {
     return await this.videoRepository
       .createQueryBuilder('video')
       .where('video.titleId = :id', { id: params.id })
-      .select(['video.video_name', 'video.video_url'])
+      .select(['video.id', 'video.video_name', 'video.video_url'])
       .getMany();
   }
 }
