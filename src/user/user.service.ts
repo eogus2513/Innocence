@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { LoginRequest } from './dto/request/loginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
+import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 
 @Injectable()
 export class UserService {
@@ -39,5 +40,9 @@ export class UserService {
     );
 
     return { access_token };
+  }
+
+  public async LastVideo(body: FixLastVideo) {
+    await this.userRepository.update(body.id, { last_video: body.last_video });
   }
 }
