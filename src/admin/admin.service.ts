@@ -10,7 +10,7 @@ import { LoginRequest } from './dto/request/loginRequest.dto';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
-import { TokenResponse } from './dto/response/TokenResponse.dto';
+import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
 
 @Injectable()
 export class AdminService {
@@ -19,13 +19,13 @@ export class AdminService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async Login(body: LoginRequest): Promise<TokenResponse> {
-    const user = await this.adminRepository.findOne({ id: body.id });
-    if (!user) {
+  async Login(body: LoginRequest): Promise<AdminTokenResponse> {
+    const admin = await this.adminRepository.findOne({ id: body.id });
+    if (!admin) {
       throw new NotFoundException('User Not Exist!');
     }
 
-    if (user.password != body.password) {
+    if (admin.password != body.password) {
       throw new BadRequestException('Password mismatch!');
     }
     const access_token = await this.jwtService.signAsync(
