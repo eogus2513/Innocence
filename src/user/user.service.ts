@@ -42,7 +42,13 @@ export class UserService {
     return { access_token };
   }
 
-  public async LastVideo(body: FixLastVideo) {
-    await this.userRepository.update(body.id, { last_video: body.last_video });
+  public async lastVideo(body: FixLastVideo, headers): Promise<void> {
+    const user = await this.bearerToken(headers.authorization);
+
+    await this.userRepository.update(user.id, { last_video: body.last_video });
+  }
+
+  private async bearerToken(bearerToken): Promise<any> {
+    return await this.jwtService.verifyAsync(bearerToken.split(' ')[1]);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put } from '@nestjs/common';
+import { Body, Controller, Headers, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginRequest } from '../admin/dto/request/loginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
@@ -14,7 +14,10 @@ export class UserController {
   }
 
   @Put('last_video')
-  public async FixLastVideo(@Body() body: FixLastVideo) {
-    return await this.userService.LastVideo(body);
+  public async FixLastVideo(
+    @Body() body: FixLastVideo,
+    @Headers() hedaers,
+  ): Promise<void> {
+    return await this.userService.lastVideo(body, hedaers);
   }
 }
