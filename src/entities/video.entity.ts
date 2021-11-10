@@ -3,15 +3,18 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Title } from './title.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @OneToOne(() => User, (user) => user.last_video)
   @ManyToOne(() => Title, (title) => title.id)
   @JoinColumn()
   title: Title;

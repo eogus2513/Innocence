@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Video } from './video.entity';
 
 @Entity()
 export class User {
@@ -14,6 +21,7 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ nullable: true })
+  @OneToOne(() => Video, (video) => video.id)
+  @JoinColumn()
   last_video: number;
 }
