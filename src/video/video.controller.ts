@@ -26,6 +26,7 @@ export class VideoController {
     return await this.videoService.subjectGetTitle(params);
   }
 
+  @UseGuards(JwtAccessGuard)
   @Get('/:id')
   public async getVideo(@Param() params: videoRequest): Promise<Video[]> {
     return await this.videoService.getVideo(params);
