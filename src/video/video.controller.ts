@@ -2,7 +2,7 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { VideoService } from './video.service';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
 import { Title } from '../entities/title.entity';
-import { JwtAccessGuard } from '../guard/jwt-access.guard';
+import { JwtAccessGuard } from '../jwt/guard/jwt-access.guard';
 import { Video } from '../entities/video.entity';
 import { videoRequest } from './dto/request/VideoRequest.dto';
 
