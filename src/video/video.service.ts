@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-<<<<<<< HEAD
 import { Repository } from 'typeorm';
 import { Title } from '../entities/title.entity';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
-=======
 import { Video } from '../entities/video.entity';
-import { Repository } from 'typeorm';
->>>>>>> master
+import { videoRequest } from './dto/request/VideoRequest.dto';
 
 @Injectable()
 export class VideoService {
   constructor(
-<<<<<<< HEAD
     @InjectRepository(Title) private titleRepository: Repository<Title>,
+    @InjectRepository(Video) private videoRepository: Repository<Video>,
   ) {}
 
   public async categoryGetTitle(params: TitleRequest): Promise<Title[]> {
@@ -31,8 +28,12 @@ export class VideoService {
       .select(['title.name'])
       .getMany();
   }
-=======
-    @InjectRepository(Video) private videoRepository: Repository<Video>,
-  ) {}
->>>>>>> master
+
+  public async getVideo(params: videoRequest): Promise<Video[]> {
+    return await this.videoRepository
+      .createQueryBuilder('video')
+      .where('video.titleId = :id', { id: params.id })
+      .select(['video.video_name', 'video.video_url'])
+      .getMany();
+  }
 }
