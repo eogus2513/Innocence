@@ -15,5 +15,5 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  last_video: string;
+  last_video: number;
 }
