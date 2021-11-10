@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { VideoService } from './video.service';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
 import { Title } from '../entities/title.entity';
@@ -10,7 +10,7 @@ import { videoRequest } from './dto/request/VideoRequest.dto';
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
 
-  //@UseGuards(JwtAccessGuard)
+  @UseGuards(JwtAccessGuard)
   @Get('category/:id')
   public async categoryGetTitle(
     @Param() params: TitleRequest,
@@ -18,7 +18,7 @@ export class VideoController {
     return await this.videoService.categoryGetTitle(params);
   }
 
-  //@UseGuards(JwtAccessGuard)
+  @UseGuards(JwtAccessGuard)
   @Get('subject/:id')
   public async subjectGetTitle(
     @Param() params: TitleRequest,
