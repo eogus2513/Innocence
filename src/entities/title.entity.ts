@@ -2,15 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-<<<<<<< HEAD
   ManyToOne,
-=======
-  OneToOne,
->>>>>>> master
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
 import { Subject } from './subject.entity';
+import { Video } from './video.entity';
 
 @Entity()
 export class Title {
@@ -20,19 +18,12 @@ export class Title {
   @Column({ nullable: false })
   name: string;
 
-<<<<<<< HEAD
+  @OneToMany(() => Video, (video) => video.title)
   @ManyToOne(() => Category, (category) => category.category_name)
   @JoinColumn()
   category: Category;
 
   @ManyToOne(() => Subject, (subject) => subject.subject_name)
-=======
-  @OneToOne(() => Category)
-  @JoinColumn()
-  category: Category;
-
-  @OneToOne(() => Subject)
->>>>>>> master
   @JoinColumn()
   subject: Subject;
 }
