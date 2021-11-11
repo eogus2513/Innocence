@@ -16,8 +16,8 @@ export class UserController {
   @Put('last_video')
   public async FixLastVideo(
     @Body() body: FixLastVideo,
-    @Headers() hedaers,
+    @Headers() headers,
   ): Promise<void> {
-    return await this.userService.lastVideo(body, hedaers);
+    return await this.userService.lastVideo(body, headers);
   }
 }
