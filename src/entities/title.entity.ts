@@ -18,12 +18,16 @@ export class Title {
   @Column({ nullable: false })
   name: string;
 
-  @OneToMany(() => Video, (video) => video.title)
-  @ManyToOne(() => Category, (category) => category.category_name)
+  @OneToMany(() => Video, (video) => video.title, { nullable: false })
+  @ManyToOne(() => Category, (category) => category.category_name, {
+    nullable: false,
+  })
   @JoinColumn()
   category: Category;
 
-  @ManyToOne(() => Subject, (subject) => subject.subject_name)
+  @ManyToOne(() => Subject, (subject) => subject.subject_name, {
+    nullable: false,
+  })
   @JoinColumn()
   subject: Subject;
 }

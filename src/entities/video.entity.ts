@@ -14,8 +14,8 @@ export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.last_video)
-  @ManyToOne(() => Title, (title) => title.id)
+  @OneToOne(() => User, (user) => user.last_video, { nullable: false })
+  @ManyToOne(() => Title, (title) => title.id, { nullable: false })
   @JoinColumn()
   title: Title;
 

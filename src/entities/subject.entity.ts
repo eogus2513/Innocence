@@ -14,14 +14,16 @@ export class Subject {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Title, (title) => title.category)
+  @OneToMany(() => Title, (title) => title.category, { nullable: false })
   @JoinColumn()
   title: Title[];
 
   @Column({ nullable: false })
   subject_name: string;
 
-  @ManyToOne(() => Category, (category) => category.subject)
+  @ManyToOne(() => Category, (category) => category.subject, {
+    nullable: false,
+  })
   @JoinColumn()
   category: Category;
 }

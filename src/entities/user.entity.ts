@@ -21,7 +21,7 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @OneToOne(() => Video, (video) => video.id)
+  @OneToOne(() => Video, (video) => video.id, { nullable: false })
   @JoinColumn()
   last_video: number;
 }

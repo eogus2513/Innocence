@@ -7,10 +7,10 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Subject, (subject) => subject.category)
+  @OneToMany(() => Subject, (subject) => subject.category, { nullable: false })
   subject: Subject[];
 
-  @OneToMany(() => Title, (title) => title.category)
+  @OneToMany(() => Title, (title) => title.category, { nullable: false })
   @Column({ nullable: false })
   category_name: string;
 }
