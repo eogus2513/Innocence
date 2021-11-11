@@ -24,13 +24,17 @@ export class AdminService {
     if (!admin) {
       throw new NotFoundException('User Not Exist!');
     }
-
     if (admin.password != body.password) {
       throw new BadRequestException('Password mismatch!');
     }
+    if (admin.isAdmin != true) {
+      throw new BadRequestException();
+    }
+
     const access_token = await this.jwtService.signAsync(
       {
         id: body.id,
+        isAdmin: true,
         access_exp: moment().hour(2).format('MM/DD/HH'),
       },
       {

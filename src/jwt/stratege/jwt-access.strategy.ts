@@ -16,8 +16,6 @@ export class AccessStrategy extends PassportStrategy(Strategy, 'access') {
   }
 
   async validate(payload: any) {
-    return {
-      id: payload.id,
-    };
+    return payload;
   }
 }
