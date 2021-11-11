@@ -11,11 +11,13 @@ import * as moment from 'moment';
 import { LoginRequest } from './dto/request/loginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
+import { Video } from '../entities/video.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Video) private videoRepository: Repository<Video>,
     private readonly jwtService: JwtService,
   ) {}
 
