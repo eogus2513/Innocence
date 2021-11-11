@@ -49,6 +49,17 @@ export class UserService {
     await this.userRepository.update(user.id, { last_video: body.last_video });
   }
 
+  public async getLastVideo(header) {
+    const user = await this.bearerToken(header.authorization);
+
+    const info = await this.userRepository.findOne(
+      { id: user.id },
+      { relations: ['last_video'] },
+    );
+
+    return info.last_video;
+  }
+
   private async bearerToken(bearerToken): Promise<any> {
     return await this.jwtService.verifyAsync(bearerToken.split(' ')[1]);
   }

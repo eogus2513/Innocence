@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Headers,
   Post,
   Put,
@@ -28,5 +29,11 @@ export class UserController {
     @Headers() headers,
   ): Promise<void> {
     return await this.userService.lastVideo(body, headers);
+  }
+
+  @UseGuards(JwtAccessGuard)
+  @Get()
+  public async getLastVideo(@Headers() header) {
+    return await this.userService.getLastVideo(header);
   }
 }
