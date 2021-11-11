@@ -40,7 +40,6 @@ export class UserService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
-
     return { access_token };
   }
 
