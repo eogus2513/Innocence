@@ -6,11 +6,22 @@ import { Admin } from '../entities/admin.entity';
 import { AccessStrategy } from 'src/jwt/stratege/jwt-access.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { Video } from '../entities/video.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 dotenv.config();
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin]), JwtModule.register({})],
+  imports: [
+    TypeOrmModule.forFeature([Admin, Video]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('ACCESS_JWT'),
+      }),
+    }),
+  ],
   controllers: [AdminController],
   providers: [AdminService, AccessStrategy],
 })
