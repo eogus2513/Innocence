@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
@@ -11,11 +12,13 @@ import { LoginRequest } from './dto/request/loginRequest.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
+import { Video } from '../entities/video.entity';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+    @InjectRepository(Video) private videoRepository: Repository<Video>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -44,6 +47,24 @@ export class AdminService {
     );
 
     return { access_token };
+  }
+
+  public async addPost(body, headers) {
+    const admin = await this.bearerToken(headers.authorization);
+
+    if (admin.isAdmin != true) {
+      throw new UnauthorizedException();
+    }
+
+    return await this.videoRepository.save({
+      video_name: body.video_name,
+      video_url: body.video_url,
+      titleId: body.titleId,
+    });
+  }
+
+  private async bearerToken(bearerToken): Promise<any> {
+    return await this.jwtService.verifyAsync(bearerToken.split(' ')[1]);
   }
 }
 
