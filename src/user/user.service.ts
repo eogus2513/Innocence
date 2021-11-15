@@ -8,10 +8,12 @@ import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
-import { LoginRequest } from './dto/request/loginRequest.dto';
+import { LoginRequest } from './dto/request/LoginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { Video } from '../entities/video.entity';
+import { SignUpRequest } from './dto/request/SignUpRequest.dto';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -20,6 +22,22 @@ export class UserService {
     @InjectRepository(Video) private videoRepository: Repository<Video>,
     private readonly jwtService: JwtService,
   ) {}
+
+  public async SignUp(body: SignUpRequest): Promise<void> {
+    if (await this.userRepository.findOne({ email: body.email })) {
+      throw new BadRequestException('User Exist!');
+    }
+    if (body.email.indexOf(' ') !== -1 || body.password.indexOf(' ') !== -1) {
+      throw new BadRequestException('email or password space exists!');
+    }
+
+    const hashedpassword = await hash(body.password, 12);
+    await this.userRepository.save({
+      email: body.email,
+      name: body.name,
+      password: hashedpassword,
+    });
+  }
 
   public async Login(body: LoginRequest): Promise<UserTokenResponse> {
     const user = await this.userRepository.findOne(body.id);

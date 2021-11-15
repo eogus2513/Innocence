@@ -12,10 +12,16 @@ import { LoginRequest } from '../admin/dto/request/loginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { JwtAccessGuard } from '../jwt/guard/jwt-access.guard';
+import { SignUpRequest } from './dto/request/SignUpRequest.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post('signup')
+  public async SignUp(@Body() body: SignUpRequest): Promise<void> {
+    await this.userService.SignUp(body);
+  }
 
   @Post('login')
   public async Login(@Body() body: LoginRequest): Promise<UserTokenResponse> {
