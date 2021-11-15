@@ -1,8 +1,8 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
@@ -54,7 +54,7 @@ export class AdminService {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
 
     const addVideo = new Video();
