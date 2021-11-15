@@ -43,12 +43,6 @@ export class UserService {
     return { access_token };
   }
 
-  public async lastVideo(body: FixLastVideo, headers): Promise<void> {
-    const user = await this.bearerToken(headers.authorization);
-
-    await this.userRepository.update(user.id, { last_video: body.last_video });
-  }
-
   public async getLastVideo(header) {
     const user = await this.bearerToken(header.authorization);
 
@@ -58,6 +52,12 @@ export class UserService {
     );
 
     return info.last_video;
+  }
+
+  public async lastVideo(body: FixLastVideo, headers): Promise<void> {
+    const user = await this.bearerToken(headers.authorization);
+
+    await this.userRepository.update(user.id, { last_video: body.last_video });
   }
 
   private async bearerToken(bearerToken): Promise<any> {
