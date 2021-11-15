@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { LoginRequest } from './dto/request/loginRequest.dto';
 //import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -20,6 +20,7 @@ export class AdminService {
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
     @InjectRepository(Video) private videoRepository: Repository<Video>,
     private readonly jwtService: JwtService,
+    private connection: Connection,
   ) {}
 
   async Login(body: LoginRequest): Promise<AdminTokenResponse> {
@@ -56,11 +57,11 @@ export class AdminService {
       throw new UnauthorizedException();
     }
 
-    return await this.videoRepository.save({
-      video_name: body.video_name,
-      video_url: body.video_url,
-      titleId: body.titleId,
-    });
+    const addVideo = new Video();
+    addVideo.video_name = body.video_name;
+    addVideo.video_url = body.video_url;
+    addVideo.title = body.titleId;
+    await this.connection.manager.save(addVideo);
   }
 
   private async bearerToken(bearerToken): Promise<any> {
