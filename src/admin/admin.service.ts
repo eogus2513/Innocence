@@ -7,11 +7,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
 import { Connection, Repository } from 'typeorm';
-import { LoginRequest } from './dto/request/AdminloginRequest.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
 import { Video } from '../entities/video.entity';
+import { LoginRequest } from './dto/request/AdminloginRequest.dto';
 
 @Injectable()
 export class AdminService {
