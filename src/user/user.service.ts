@@ -27,15 +27,15 @@ export class UserService {
     if (await this.userRepository.findOne({ email: body.email })) {
       throw new BadRequestException('User Exist!');
     }
-    if (body.email.indexOf(' ') !== -1 || body.password.indexOf(' ') !== -1) {
-      throw new BadRequestException('email or password space exists!');
+    if (body.password.indexOf(' ') !== -1) {
+      throw new BadRequestException('password space Exist!');
     }
 
-    const hashedpassword = await hash(body.password, 12);
+    const hashedPassword = await hash(body.password, 12);
     await this.userRepository.save({
       email: body.email,
       name: body.name,
-      password: hashedpassword,
+      password: hashedPassword,
     });
   }
 
