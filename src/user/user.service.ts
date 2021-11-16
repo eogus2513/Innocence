@@ -40,7 +40,7 @@ export class UserService {
   }
 
   public async Login(body: LoginRequest): Promise<UserTokenResponse> {
-    const user = await this.userRepository.findOne(body.id);
+    const user = await this.userRepository.findOne({ email: body.email });
     if (!user) {
       throw new NotFoundException('User Not Exist!');
     }
@@ -50,7 +50,7 @@ export class UserService {
     }
     const access_token = await this.jwtService.signAsync(
       {
-        id: body.id,
+        email: body.email,
         access_exp: moment().hour(2).format('MM/DD/HH'),
       },
       {
