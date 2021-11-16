@@ -1,6 +1,6 @@
 import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { LoginRequest } from './dto/request/loginRequest.dto';
+import { LoginRequest } from './dto/request/AdminloginRequest.dto';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
 import { addPost } from './dto/request/addPost.dto';
 

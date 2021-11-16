@@ -8,11 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginRequest } from '../admin/dto/request/loginRequest.dto';
+import { LoginRequest } from './dto/request/UserLoginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { JwtAccessGuard } from '../middleware/guard/jwt-access.guard';
-import { SignUpRequest } from './dto/request/SignUpRequest.dto';
+import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
 
 @Controller('user')
 export class UserController {

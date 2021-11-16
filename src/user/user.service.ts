@@ -8,11 +8,11 @@ import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
-import { LoginRequest } from './dto/request/LoginRequest.dto';
+import { LoginRequest } from './dto/request/UserLoginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { Video } from '../entities/video.entity';
-import { SignUpRequest } from './dto/request/SignUpRequest.dto';
+import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
 import { hash } from 'bcrypt';
 
 @Injectable()
