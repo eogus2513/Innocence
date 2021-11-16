@@ -3,7 +3,7 @@ import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
-import { AccessStrategy } from 'src/jwt/stratege/jwt-access.strategy';
+import { AccessStrategy } from 'src/middleware/stratege/jwt-access.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { Video } from '../entities/video.entity';

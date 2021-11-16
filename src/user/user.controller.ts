@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 import { LoginRequest } from '../admin/dto/request/loginRequest.dto';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
-import { JwtAccessGuard } from '../jwt/guard/jwt-access.guard';
+import { JwtAccessGuard } from '../middleware/guard/jwt-access.guard';
 import { SignUpRequest } from './dto/request/SignUpRequest.dto';
 
 @Controller('user')
