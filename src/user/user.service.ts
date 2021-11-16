@@ -12,7 +12,7 @@ import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { Video } from '../entities/video.entity';
 import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { LoginRequest } from './dto/request/UserLoginRequest.dto';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class UserService {
       throw new NotFoundException('User Not Exist!');
     }
 
-    if (user.password != body.password) {
+    if (!(await compare(body.password, user.password))) {
       throw new BadRequestException('Password mismatch!');
     }
     const access_token = await this.jwtService.signAsync(
