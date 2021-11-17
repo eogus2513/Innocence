@@ -51,7 +51,7 @@ export class UserService {
     const access_token = await this.jwtService.signAsync(
       {
         email: body.email,
-        access_exp: moment().hour(2).format('MM일/DD월/H시'),
+        access_exp: moment().hour(2).format('MM월/DD일/H시'),
       },
       {
         secret: process.env.ACCESS_JWT,
