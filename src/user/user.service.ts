@@ -70,8 +70,10 @@ export class UserService {
     const user = await this.bearerToken(header.authorization);
 
     const info = await this.userRepository.findOne(
-      { id: user.id },
-      { relations: ['last_video'] },
+      { email: user.email },
+      {
+        relations: ['last_video'],
+      },
     );
 
     await this.logger.log('Get last_video');
@@ -81,7 +83,11 @@ export class UserService {
   public async lastVideo(body: FixLastVideo, headers): Promise<void> {
     const user = await this.bearerToken(headers.authorization);
 
-    await this.userRepository.update(user.id, { last_video: body.last_video });
+    await this.userRepository.update(
+      { email: user.email },
+      { last_video: body.last_video },
+    );
+
     await this.logger.log('Save last_video');
   }
 
