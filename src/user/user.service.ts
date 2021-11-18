@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,6 +24,8 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
+  private readonly logger = new Logger('User');
+
   public async SignUp(body: SignUpRequest): Promise<void> {
     if (await this.userRepository.findOne({ email: body.email })) {
       throw new BadRequestException('User Exist!');
@@ -37,6 +40,7 @@ export class UserService {
       name: body.name,
       password: hashedPassword,
     });
+    await this.logger.log('SignUp SUCCESS : ' + body.email);
   }
 
   public async Login(body: LoginRequest): Promise<UserTokenResponse> {
@@ -58,6 +62,7 @@ export class UserService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
+    await this.logger.log('Login SUCCESS : ' + body.email);
     return { access_token };
   }
 
@@ -69,6 +74,7 @@ export class UserService {
       { relations: ['last_video'] },
     );
 
+    await this.logger.log('Get last_video');
     return info.last_video;
   }
 
@@ -76,6 +82,7 @@ export class UserService {
     const user = await this.bearerToken(headers.authorization);
 
     await this.userRepository.update(user.id, { last_video: body.last_video });
+    await this.logger.log('Save last_video');
   }
 
   private async bearerToken(bearerToken): Promise<any> {

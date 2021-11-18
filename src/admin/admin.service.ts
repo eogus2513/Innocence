@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,6 +22,8 @@ export class AdminService {
     private readonly jwtService: JwtService,
     private connection: Connection,
   ) {}
+
+  private readonly logger = new Logger('Admin');
 
   async Login(body: LoginRequest): Promise<AdminTokenResponse> {
     const admin = await this.adminRepository.findOne({ id: body.id });
@@ -45,6 +48,7 @@ export class AdminService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
+    await this.logger.log('Login SUCCESS : ' + body.id);
 
     return { access_token };
   }
@@ -61,6 +65,8 @@ export class AdminService {
     addVideo.video_url = body.video_url;
     addVideo.title = body.titleId;
     await this.connection.manager.save(addVideo);
+
+    await this.logger.log('Add Post');
   }
 
   private async bearerToken(bearerToken): Promise<any> {
