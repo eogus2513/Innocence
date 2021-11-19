@@ -21,7 +21,6 @@ export class VideoService {
       .where('title.categoryId = :id', { id: params.id })
       .select(['title.name'])
       .getMany();
-    await this.logger.log('category_get Title');
   }
 
   public async subjectGetTitle(params: TitleRequest): Promise<Title[]> {
@@ -30,8 +29,6 @@ export class VideoService {
       .where('title.subjectId = :id', { id: params.id })
       .select(['title.name'])
       .getMany();
-
-    await this.logger.log('subject_get Title');
   }
 
   public async getVideo(params: videoRequest): Promise<Video[]> {
@@ -40,7 +37,5 @@ export class VideoService {
       .where('video.titleId = :id', { id: params.id })
       .select(['video.id', 'video.video_name', 'video.video_url'])
       .getMany();
-
-    await this.logger.log('Get Video');
   }
 }
