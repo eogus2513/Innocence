@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Headers, HttpCode, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
 import { addPost } from './dto/request/addPost.dto';
@@ -9,6 +9,7 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post('login')
+  @HttpCode(200)
   public async Login(@Body() body: LoginRequest): Promise<AdminTokenResponse> {
     return await this.adminService.Login(body);
   }

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Headers,
+  HttpCode,
   Post,
   Put,
   UseGuards,
@@ -24,6 +25,7 @@ export class UserController {
   }
 
   @Post('login')
+  @HttpCode(200)
   public async Login(@Body() body: LoginRequest): Promise<UserTokenResponse> {
     return await this.userService.Login(body);
   }
