@@ -27,7 +27,7 @@ export class VideoService {
     return await this.titleRepository
       .createQueryBuilder('title')
       .where('title.subjectId = :id', { id: params.id })
-      .select(['title.name'])
+      .select(['title.id', 'title.name'])
       .getMany();
   }
 
