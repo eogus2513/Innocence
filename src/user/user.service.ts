@@ -27,7 +27,7 @@ export class UserService {
   private readonly logger = new Logger('User');
 
   public async SignUp(body: SignUpRequest): Promise<void> {
-    if (await this.userRepository.findOne({ email: body.email })) {
+    if (await this.userRepository.findOne({ id: body.id })) {
       throw new BadRequestException('User Exist!');
     }
     if (body.password.indexOf(' ') !== -1) {
@@ -36,15 +36,15 @@ export class UserService {
 
     const hashedPassword = await hash(body.password, 12);
     await this.userRepository.save({
-      email: body.email,
+      id: body.id,
       name: body.name,
       password: hashedPassword,
     });
-    await this.logger.log('SignUp SUCCESS : ' + body.email);
+    await this.logger.log('SignUp SUCCESS : ' + body.id);
   }
 
   public async Login(body: LoginRequest): Promise<UserTokenResponse> {
-    const user = await this.userRepository.findOne({ email: body.email });
+    const user = await this.userRepository.findOne({ id: body.id });
     if (!user) {
       throw new NotFoundException('User Not Exist!');
     }
@@ -54,7 +54,7 @@ export class UserService {
     }
     const access_token = await this.jwtService.signAsync(
       {
-        email: body.email,
+        id: body.id,
         access_exp: moment().hour(2).format('H시간'),
       },
       {
@@ -62,7 +62,7 @@ export class UserService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
-    await this.logger.log('Login SUCCESS : ' + body.email);
+    await this.logger.log('Login SUCCESS : ' + body.id);
     return { access_token };
   }
 
@@ -70,7 +70,7 @@ export class UserService {
     const user = await this.bearerToken(header.authorization);
 
     const info = await this.userRepository.findOne(
-      { email: user.email },
+      { id: user.id },
       {
         relations: ['last_video'],
       },
@@ -84,7 +84,7 @@ export class UserService {
     const user = await this.bearerToken(headers.authorization);
 
     await this.userRepository.update(
-      { email: user.email },
+      { id: user.id },
       { last_video: body.last_video },
     );
 

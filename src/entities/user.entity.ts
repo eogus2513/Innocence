@@ -10,10 +10,10 @@ import { Video } from './video.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  uid: number;
 
   @Column({ nullable: false })
-  email: string;
+  id: string;
 
   @Column({ nullable: false })
   name: string;
