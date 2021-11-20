@@ -41,7 +41,7 @@ export class AdminService {
       {
         id: body.id,
         isAdmin: true,
-        access_exp: moment().hour(2).format('H시간'),
+        access_exp: moment().hour(24).format('YYYY/MM/DD'),
       },
       {
         secret: process.env.ACCESS_JWT,
