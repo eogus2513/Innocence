@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Title } from '../entities/title.entity';
@@ -13,13 +13,11 @@ export class VideoService {
     @InjectRepository(Video) private videoRepository: Repository<Video>,
   ) {}
 
-  private readonly logger = new Logger('Video');
-
   public async categoryGetTitle(params: TitleRequest): Promise<Title[]> {
     return await this.titleRepository
       .createQueryBuilder('title')
       .where('title.categoryId = :id', { id: params.id })
-      .select(['title.name'])
+      .select(['title.id', 'title.name'])
       .getMany();
   }
 
