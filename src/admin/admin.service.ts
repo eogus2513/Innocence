@@ -7,7 +7,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';
+<<<<<<< Updated upstream
 import { Connection, Repository } from 'typeorm';
+=======
+import { Repository } from 'typeorm';
+import { LoginRequest } from './dto/request/loginRequest.dto';
+>>>>>>> Stashed changes
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
@@ -66,7 +71,6 @@ export class AdminService {
 
     const addTitle = new Title();
     addTitle.name = body.name;
-    addTitle.category = body.categoryId;
     addTitle.subject = body.subjectId;
     await this.connection.manager.save(addTitle);
 
@@ -93,3 +97,5 @@ export class AdminService {
     return await this.jwtService.verifyAsync(bearerToken.split(' ')[1]);
   }
 }
+
+//!(await compare(body.password, user.password))
