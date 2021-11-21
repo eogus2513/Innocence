@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from './category.entity';
 import { Subject } from './subject.entity';
 import { Video } from './video.entity';
 
@@ -19,12 +18,6 @@ export class Title {
   name: string;
 
   @OneToMany(() => Video, (video) => video.title, { nullable: false })
-  @ManyToOne(() => Category, (category) => category.category_name, {
-    nullable: false,
-  })
-  @JoinColumn()
-  category: Category;
-
   @ManyToOne(() => Subject, (subject) => subject.subject_name, {
     nullable: false,
   })
