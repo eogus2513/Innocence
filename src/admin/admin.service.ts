@@ -25,7 +25,7 @@ export class AdminService {
 
   private readonly logger = new Logger('Admin');
 
-  async Login(body: LoginRequest): Promise<AdminTokenResponse> {
+  public async Login(body: LoginRequest): Promise<AdminTokenResponse> {
     const admin = await this.adminRepository.findOne({ id: body.id });
     if (!admin) {
       throw new NotFoundException('User Not Exist!');
@@ -53,7 +53,7 @@ export class AdminService {
     return { access_token };
   }
 
-  public async addPost(body, headers) {
+  public async addPost(body, headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {

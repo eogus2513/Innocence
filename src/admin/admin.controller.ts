@@ -15,7 +15,10 @@ export class AdminController {
   }
 
   @Post('add')
-  public async addPost(@Body() body: addPost, @Headers() headers) {
-    return await this.adminService.addPost(body, headers);
+  public async addPost(
+    @Body() body: addPost,
+    @Headers() headers,
+  ): Promise<void> {
+    await this.adminService.addPost(body, headers);
   }
 }

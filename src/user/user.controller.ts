@@ -32,7 +32,7 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Get()
-  public async getLastVideo(@Headers() header) {
+  public async getLastVideo(@Headers() header): Promise<Number> {
     return await this.userService.getLastVideo(header);
   }
 

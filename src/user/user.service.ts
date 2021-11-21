@@ -66,7 +66,7 @@ export class UserService {
     return { access_token };
   }
 
-  public async getLastVideo(header) {
+  public async getLastVideo(header): Promise<Number> {
     const user = await this.bearerToken(header.authorization);
 
     const info = await this.userRepository.findOne(
