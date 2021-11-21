@@ -3,9 +3,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
+import { Title } from './title.entity';
 
 @Entity()
 export class Subject {
@@ -20,4 +22,8 @@ export class Subject {
   })
   @JoinColumn()
   category: Category;
+
+  @OneToMany(() => Title, (title) => title.category, { nullable: false })
+  @JoinColumn()
+  title: Title[];
 }

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Subject } from './subject.entity';
 import { Video } from './video.entity';
+import { Category } from './category.entity';
 
 @Entity()
 export class Title {
@@ -18,7 +19,13 @@ export class Title {
   name: string;
 
   @OneToMany(() => Video, (video) => video.title, { nullable: false })
-  @ManyToOne(() => Subject, (subject) => subject.subject_name, {
+  @ManyToOne(() => Category, (category) => category.id, {
+    nullable: false,
+  })
+  @JoinColumn()
+  category: Category;
+
+  @ManyToOne(() => Subject, (subject) => subject.id, {
     nullable: false,
   })
   @JoinColumn()
