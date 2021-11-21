@@ -19,11 +19,15 @@ export class Subject {
 
   @ManyToOne(() => Category, (category) => category.subject, {
     nullable: false,
+    eager: true,
   })
   @JoinColumn()
   category: Category;
 
-  @OneToMany(() => Title, (title) => title.category, { nullable: false })
+  @OneToMany(() => Title, (title) => title.category, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn()
   title: Title[];
 }

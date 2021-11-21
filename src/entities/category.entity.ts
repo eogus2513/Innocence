@@ -16,8 +16,14 @@ export class Category {
   @Column({ nullable: false })
   category_name: string;
 
-  @OneToMany(() => Title, (title) => title.category, { nullable: false })
-  @OneToMany(() => Subject, (subject) => subject.category, { nullable: false })
+  @OneToMany(() => Title, (title) => title.category, {
+    nullable: false,
+    eager: true,
+  })
+  @OneToMany(() => Subject, (subject) => subject.category, {
+    nullable: false,
+    eager: true,
+  })
   @JoinColumn()
   subject: Subject[];
 }

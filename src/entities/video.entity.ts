@@ -13,14 +13,17 @@ export class Video {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.last_video, { nullable: false })
-  @ManyToOne(() => Title, (title) => title.id, { nullable: false })
-  @JoinColumn()
-  title: Title;
-
   @Column({ nullable: false })
   video_name: string;
 
   @Column({ nullable: false })
   video_url: string;
+
+  @ManyToOne(() => User, (user) => user.last_video, {
+    nullable: false,
+    eager: true,
+  })
+  @ManyToOne(() => Title, (title) => title.id, { nullable: false, eager: true })
+  @JoinColumn()
+  title: Title;
 }
