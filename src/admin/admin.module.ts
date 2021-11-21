@@ -8,12 +8,13 @@ import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { Video } from '../entities/video.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Title } from '../entities/title.entity';
 
 dotenv.config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Admin, Video]),
+    TypeOrmModule.forFeature([Admin, Title, Video]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

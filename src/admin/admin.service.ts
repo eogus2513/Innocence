@@ -13,11 +13,15 @@ import * as moment from 'moment';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
 import { Video } from '../entities/video.entity';
 import { LoginRequest } from './dto/request/AdminloginRequest.dto';
+import { addTitle } from './dto/request/addTitle.dto';
+import { Title } from '../entities/title.entity';
+import { addVideo } from './dto/request/addVideo.dto';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+    @InjectRepository(Title) private titleRepository: Repository<Title>,
     @InjectRepository(Video) private videoRepository: Repository<Video>,
     private readonly jwtService: JwtService,
     private connection: Connection,
@@ -53,7 +57,23 @@ export class AdminService {
     return { access_token };
   }
 
-  public async addPost(body, headers): Promise<void> {
+  public async addTitle(body: addTitle, headers) {
+    const admin = await this.bearerToken(headers.authorization);
+
+    if (admin.isAdmin != true) {
+      throw new ForbiddenException();
+    }
+
+    const addTitle = new Title();
+    addTitle.name = body.name;
+    addTitle.category = body.categoryId;
+    addTitle.subject = body.subjectId;
+    await this.connection.manager.save(addTitle);
+
+    await this.logger.log('Add Title : ' + body.name);
+  }
+
+  public async addVideo(body: addVideo, headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {
@@ -66,7 +86,7 @@ export class AdminService {
     addVideo.title = body.titleId;
     await this.connection.manager.save(addVideo);
 
-    await this.logger.log('Add Post');
+    await this.logger.log('Add Post : ' + body.video_name);
   }
 
   private async bearerToken(bearerToken): Promise<any> {
