@@ -66,7 +66,6 @@ export class AdminService {
 
     const addTitle = new Title();
     addTitle.name = body.name;
-    addTitle.category = body.categoryId;
     addTitle.subject = body.subjectId;
     await this.connection.manager.save(addTitle);
 
