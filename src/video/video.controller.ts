@@ -12,9 +12,7 @@ export class VideoController {
 
   @UseGuards(JwtAccessGuard)
   @Get('category/:id')
-  public async categoryGetTitle(
-    @Param() params: TitleRequest,
-  ): Promise<Title[]> {
+  public async categoryGetTitle(@Param() params: TitleRequest) {
     return await this.videoService.categoryGetTitle(params);
   }
 
