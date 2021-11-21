@@ -64,8 +64,18 @@ export class AdminService {
       throw new ForbiddenException();
     }
 
+    const category = await this.titleRepository
+      .createQueryBuilder('title')
+      .where('title.subjectId = :id', { id: body.subjectId })
+      .getRawOne();
+
+    if (!category) {
+      throw new BadRequestException('Invalid subjectId value');
+    }
+
     const addTitle = new Title();
     addTitle.name = body.name;
+    addTitle.category = category.title_categoryId;
     addTitle.subject = body.subjectId;
     await this.connection.manager.save(addTitle);
 
