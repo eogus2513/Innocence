@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Title } from '../../../entities/title.entity';
 
-export class addPost {
+export class addVideo {
   @IsString()
   @IsNotEmpty()
   video_name: string;
@@ -11,5 +12,5 @@ export class addPost {
 
   @IsNumber()
   @IsNotEmpty()
-  titleId: number;
+  titleId: Title;
 }
