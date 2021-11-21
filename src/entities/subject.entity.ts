@@ -26,7 +26,6 @@ export class Subject {
 
   @OneToMany(() => Title, (title) => title.category, {
     nullable: false,
-    eager: true,
   })
   @JoinColumn()
   title: Title[];
