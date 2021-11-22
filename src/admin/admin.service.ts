@@ -38,7 +38,7 @@ export class AdminService {
       throw new BadRequestException('Password mismatch!');
     }
     if (admin.isAdmin != true) {
-      throw new BadRequestException();
+      throw new ForbiddenException();
     }
 
     const access_token = await this.jwtService.signAsync(
@@ -57,7 +57,7 @@ export class AdminService {
     return { access_token };
   }
 
-  public async addTitle(body: addTitle, headers) {
+  public async addTitle(body: addTitle, headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {
