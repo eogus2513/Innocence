@@ -1,41 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Title } from '../entities/title.entity';
-import { TitleRequest } from './dto/request/TitleRequest.dto';
 import { Video } from '../entities/video.entity';
 import { videoRequest } from './dto/request/VideoRequest.dto';
 
 @Injectable()
 export class VideoService {
   constructor(
-    @InjectRepository(Title) private titleRepository: Repository<Title>,
     @InjectRepository(Video) private videoRepository: Repository<Video>,
   ) {}
 
-  private readonly logger = new Logger('Admin');
-
-  public async categoryGetTitle(params: TitleRequest): Promise<Title[]> {
-    const title = await this.titleRepository
-      .createQueryBuilder('title')
-      .where('title.categoryId = :id', { id: params.id })
-      .select(['title.id', 'title.name'])
-      .getMany();
-
-    await this.logger.log('(category) Get Title');
-    return title;
-  }
-
-  public async subjectGetTitle(params: TitleRequest): Promise<Title[]> {
-    const title = await this.titleRepository
-      .createQueryBuilder('title')
-      .where('title.subjectId = :id', { id: params.id })
-      .select(['title.id', 'title.name'])
-      .getMany();
-
-    await this.logger.log('(subject) Get Title');
-    return title;
-  }
+  private readonly logger = new Logger('Video');
 
   public async getVideo(params: videoRequest): Promise<Video[]> {
     const video = await this.videoRepository
