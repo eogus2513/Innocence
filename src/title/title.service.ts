@@ -33,4 +33,13 @@ export class TitleService {
     await this.logger.log('(subject) Get Title');
     return title;
   }
+
+  public async getTitle(): Promise<Title[]> {
+    const titles = await this.titleRepository
+      .createQueryBuilder('title')
+      .getMany();
+
+    await this.logger.log('Get Title');
+    return titles;
+  }
 }

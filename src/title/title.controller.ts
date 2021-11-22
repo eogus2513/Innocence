@@ -9,6 +9,12 @@ export class TitleController {
   constructor(private readonly titleService: TitleService) {}
 
   @UseGuards(JwtAccessGuard)
+  @Get()
+  public async getTitle(): Promise<Title[]> {
+    return await this.titleService.getTitle();
+  }
+
+  @UseGuards(JwtAccessGuard)
   @Get('category/:id')
   public async categoryGetTitle(@Param() params: TitleRequest) {
     return await this.titleService.categoryGetTitle(params);
