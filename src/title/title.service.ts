@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Title } from '../entities/title.entity';
 import { Repository } from 'typeorm';
-import { TitleRequest } from '../video/dto/request/TitleRequest.dto';
+import { TitleRequest } from './dto/request/TitleRequest.dto';
 
 @Injectable()
 export class TitleService {
@@ -19,7 +19,7 @@ export class TitleService {
       .select(['title.id', 'title.name'])
       .getMany();
 
-    await this.logger.log('(category) Get Title');
+    await this.logger.log('Get Title - category');
     return title;
   }
 
@@ -30,7 +30,7 @@ export class TitleService {
       .select(['title.id', 'title.name'])
       .getMany();
 
-    await this.logger.log('(subject) Get Title');
+    await this.logger.log('Get Title - subject');
     return title;
   }
 
