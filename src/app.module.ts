@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
 import { VideoModule } from './video/video.module';
+import { TitleModule } from './title/title.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { VideoModule } from './video/video.module';
     AdminModule,
     UserModule,
     VideoModule,
+    TitleModule,
   ],
   controllers: [],
   providers: [],
