@@ -82,20 +82,22 @@ export class AdminService {
     await this.logger.log('Add Title : ' + body.name);
   }
 
-  public async addVideo(body: addVideo, headers): Promise<void> {
+  public async addVideo(body: addVideo[], headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {
       throw new ForbiddenException();
     }
+    body.map(async (props) => {
+      const addVideo = new Video();
+      addVideo.video_name = props.video_name;
+      addVideo.video_url = props.video_url;
+      addVideo.title = props.titleId;
+      await this.connection.manager.save(addVideo);
 
-    const addVideo = new Video();
-    addVideo.video_name = body.video_name;
-    addVideo.video_url = body.video_url;
-    addVideo.title = body.titleId;
-    await this.connection.manager.save(addVideo);
-
-    await this.logger.log('Add Post : ' + body.video_name);
+      await this.logger.log('Add Video : ' + props.video_name);
+    });
+    await this.logger.log('Finish Add Video');
   }
 
   private async bearerToken(bearerToken): Promise<any> {

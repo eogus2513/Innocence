@@ -35,7 +35,7 @@ export class AdminController {
   @UseGuards(JwtAccessGuard)
   @Post('add_video')
   public async addVideo(
-    @Body() body: addVideo,
+    @Body() body: addVideo[],
     @Headers() headers,
   ): Promise<void> {
     await this.adminService.addVideo(body, headers);
