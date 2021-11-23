@@ -22,6 +22,7 @@ import { Title } from '../entities/title.entity';
         database: configService.get('DB_DATABASE'),
         entities: [Admin, User, Category, Subject, Title, Video],
         synchronize: false,
+        logging: true,
       }),
     }),
   ],

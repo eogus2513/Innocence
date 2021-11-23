@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 import { Video } from '../entities/video.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Title } from '../entities/title.entity';
+import { APP_PIPE } from '@nestjs/core';
 
 dotenv.config();
 
@@ -24,6 +25,13 @@ dotenv.config();
     }),
   ],
   controllers: [AdminController],
-  providers: [AdminService, AccessStrategy],
+  providers: [
+    AdminService,
+    AccessStrategy,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AdminModule {}

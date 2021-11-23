@@ -64,40 +64,57 @@ export class AdminService {
       throw new ForbiddenException();
     }
 
-    const category = await this.titleRepository
+    const title = await this.titleRepository
       .createQueryBuilder('title')
       .where('title.subjectId = :id', { id: body.subjectId })
       .getRawOne();
 
-    if (!category) {
+    if (!title) {
       throw new BadRequestException('Invalid subjectId value');
     }
 
-    const addTitle = new Title();
-    addTitle.name = body.name;
-    addTitle.category = category.title_categoryId;
-    addTitle.subject = body.subjectId;
-    await this.connection.manager.save(addTitle);
+    await this.titleRepository.save({
+      name: body.name,
+      category: title.category,
+      subject: body.subjectId,
+    });
 
     await this.logger.log('Add Title : ' + body.name);
   }
 
   public async addVideo(body: addVideo[], headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
-
     if (admin.isAdmin != true) {
       throw new ForbiddenException();
     }
-    body.map(async (props) => {
-      const addVideo = new Video();
-      addVideo.video_name = props.video_name;
-      addVideo.video_url = props.video_url;
-      addVideo.title = props.titleId;
-      await this.connection.manager.save(addVideo);
 
-      await this.logger.log('Add Video : ' + props.video_name);
-    });
-    await this.logger.log('Finish Add Video');
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await Promise.all(
+        body.map(async (props) => {
+          if (!(await this.titleRepository.findOne(props.titleId))) {
+            throw new Error();
+          }
+          const addVideo = new Video();
+          addVideo.video_name = props.video_name;
+          addVideo.video_url = props.video_url;
+          addVideo.title = props.titleId;
+
+          await queryRunner.manager.save(addVideo);
+          this.logger.log('Add Video : ' + props.video_name);
+        }),
+      );
+      await queryRunner.commitTransaction();
+      await this.logger.log('Finish Add Video');
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   private async bearerToken(bearerToken): Promise<any> {
