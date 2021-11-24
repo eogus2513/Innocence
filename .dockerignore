@@ -1,6 +1,2 @@
 node_modules
-.eslintrc.js
-.gitignore
-.prettierrc
-nest-cli.json
 README.md
