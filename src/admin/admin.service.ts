@@ -64,18 +64,20 @@ export class AdminService {
       throw new ForbiddenException();
     }
 
-    const title = await this.titleRepository
-      .createQueryBuilder('title')
-      .where('title.subjectId = :id', { id: body.subjectId })
+    const subject = await this.titleRepository
+      .createQueryBuilder('subject')
+      .where('subject.subjectId = :id', { id: body.subjectId })
       .getRawOne();
 
-    if (!title) {
+    console.log();
+
+    if (!subject) {
       throw new BadRequestException('Invalid subjectId value');
     }
 
     await this.titleRepository.save({
       name: body.name,
-      category: title.category,
+      category: subject.subject_categoryId,
       subject: body.subjectId,
     });
 
