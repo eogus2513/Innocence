@@ -1,9 +1,10 @@
 FROM node:15.8.0-alpine3.10
 
-WORKDIR /root
+WORKDIR /app
 
 COPY . .
 
-EXPOSE 3000
+RUN yarn install
+RUN yarn build
 
-CMD ["yarn" ,"node", "./dist/main.js"]
+CMD ["yarn", "run", "start"]
