@@ -103,7 +103,7 @@ export class AdminService {
           addVideo.video_url = props.video_url;
           addVideo.title = props.titleId;
 
-          await queryRunner.manager.save(addVideo);
+          queryRunner.manager.save(addVideo);
           this.logger.log('Add Video : ' + props.video_name);
         }),
       );
