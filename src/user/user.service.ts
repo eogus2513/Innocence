@@ -30,15 +30,11 @@ export class UserService {
     if (await this.userRepository.findOne({ id: body.id })) {
       throw new BadRequestException('User Exist!');
     }
-    if (body.password.indexOf(' ') !== -1) {
-      throw new BadRequestException('password space Exist!');
-    }
 
-    const hashedPassword = await hash(body.password, 12);
     await this.userRepository.save({
       id: body.id,
       name: body.name,
-      password: hashedPassword,
+      password: await hash(body.password, 12),
     });
     await this.logger.log('SignUp SUCCESS : ' + body.id);
   }
