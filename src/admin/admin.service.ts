@@ -29,12 +29,15 @@ export class AdminService {
 
   private readonly logger = new Logger('Admin');
 
-  public async Login(body: LoginRequest): Promise<AdminTokenResponse> {
-    const admin = await this.adminRepository.findOne({ id: body.id });
+  public async Login({
+    id,
+    password,
+  }: LoginRequest): Promise<AdminTokenResponse> {
+    const admin = await this.adminRepository.findOne({ id: id });
     if (!admin) {
       throw new NotFoundException('User Not Exist!');
     }
-    if (admin.password != body.password) {
+    if (admin.password != password) {
       throw new BadRequestException('Password mismatch!');
     }
     if (admin.isAdmin != true) {
@@ -43,7 +46,7 @@ export class AdminService {
 
     const access_token = await this.jwtService.signAsync(
       {
-        id: body.id,
+        id: id,
         isAdmin: true,
         access_exp: moment().hour(24).format('YYYY/MM/DD'),
       },
@@ -52,12 +55,12 @@ export class AdminService {
         expiresIn: `${process.env.ACCESS_EXP}s`,
       },
     );
-    await this.logger.log('Login SUCCESS : ' + body.id);
+    await this.logger.log('Login SUCCESS : ' + id);
 
     return { access_token };
   }
 
-  public async addTitle(body: addTitle, headers): Promise<void> {
+  public async addTitle({ name, subjectId }: addTitle, headers): Promise<void> {
     const admin = await this.bearerToken(headers.authorization);
 
     if (admin.isAdmin != true) {
@@ -66,7 +69,7 @@ export class AdminService {
 
     const subject = await this.titleRepository
       .createQueryBuilder('subject')
-      .where('subject.subjectId = :id', { id: body.subjectId })
+      .where('subject.subjectId = :id', { id: subjectId })
       .getRawOne();
 
     console.log();
@@ -76,12 +79,12 @@ export class AdminService {
     }
 
     await this.titleRepository.save({
-      name: body.name,
+      name: name,
       category: subject.subject_categoryId,
-      subject: body.subjectId,
+      subject: subjectId,
     });
 
-    await this.logger.log('Add Title : ' + body.name);
+    await this.logger.log('Add Title : ' + name);
   }
 
   public async addVideo(body: addVideo[], headers): Promise<void> {
