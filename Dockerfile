@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /app
+WORKDIR /tby_back/app
 
 COPY . .
 
