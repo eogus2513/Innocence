@@ -13,25 +13,25 @@ export class TitleService {
   private readonly logger = new Logger('Title');
 
   public async categoryGetTitle(params: TitleRequest): Promise<Title[]> {
-    const title = await this.titleRepository
+    const titles = await this.titleRepository
       .createQueryBuilder('title')
       .where('title.categoryId = :id', { id: params.id })
       .select(['title.id', 'title.name'])
       .getMany();
 
     await this.logger.log('Get Title - category');
-    return title;
+    return titles;
   }
 
   public async subjectGetTitle(params: TitleRequest): Promise<Title[]> {
-    const title = await this.titleRepository
+    const titles = await this.titleRepository
       .createQueryBuilder('title')
       .where('title.subjectId = :id', { id: params.id })
       .select(['title.id', 'title.name'])
       .getMany();
 
     await this.logger.log('Get Title - subject');
-    return title;
+    return titles;
   }
 
   public async getTitle(): Promise<Title[]> {
