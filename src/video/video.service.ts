@@ -12,10 +12,10 @@ export class VideoService {
 
   private readonly logger = new Logger('Video');
 
-  public async getVideo(params: videoRequest): Promise<Video[]> {
+  public async getVideo({ id }: videoRequest): Promise<Video[]> {
     const video = await this.videoRepository
       .createQueryBuilder('video')
-      .where('video.titleId = :id', { id: params.id })
+      .where('video.titleId = :id', { id: id })
       .select(['video.id', 'video.video_name', 'video.video_url'])
       .getMany();
 
