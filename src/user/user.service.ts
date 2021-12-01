@@ -8,13 +8,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import * as moment from 'moment';
-import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
-import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 import { Video } from '../entities/video.entity';
-import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
 import { compare, hash } from 'bcrypt';
+import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
+import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
 import { LoginRequest } from './dto/request/UserLoginRequest.dto';
+import { FixLastVideo } from './dto/request/FixLastVideo.dto';
 
 @Injectable()
 export class UserService {
@@ -26,68 +25,81 @@ export class UserService {
 
   private readonly logger = new Logger('User');
 
-  public async SignUp(body: SignUpRequest): Promise<void> {
-    if (await this.userRepository.findOne({ id: body.id })) {
+  public async SignUp({ id, name, password }: SignUpRequest): Promise<void> {
+    if (await this.userRepository.findOne({ id: id })) {
       throw new BadRequestException('User Exist!');
     }
 
+    const hashedPassword: string = await hash(password, 12);
     await this.userRepository.save({
-      id: body.id,
-      name: body.name,
-      password: await hash(body.password, 12),
+      id: id,
+      name: name,
+      password: hashedPassword,
     });
-    await this.logger.log('SignUp SUCCESS : ' + body.id);
+    await this.logger.log('SignUp SUCCESS : ' + id);
   }
 
-  public async Login(body: LoginRequest): Promise<UserTokenResponse> {
-    const user = await this.userRepository.findOne({ id: body.id });
+  public async Login({
+    id,
+    password,
+  }: LoginRequest): Promise<UserTokenResponse> {
+    const user = await this.userRepository.findOne({ id: id });
     if (!user) {
       throw new NotFoundException('User Not Exist!');
     }
 
-    if (!(await compare(body.password, user.password))) {
+    if (!(await compare(password, user.password))) {
       throw new BadRequestException('Password mismatch!');
     }
-    const access_token = await this.jwtService.signAsync(
-      {
-        id: body.id,
-        access_exp: moment().hour(24).format('YYYY/MM/DD'),
-      },
-      {
-        secret: process.env.ACCESS_JWT,
-        expiresIn: `${process.env.ACCESS_EXP}s`,
-      },
-    );
-    await this.logger.log('Login SUCCESS : ' + body.id);
-    return { access_token };
+    await this.logger.log('Login SUCCESS : ' + id);
+    return {
+      access_token: await this.generateToken(id, 'access'),
+    };
   }
 
-  public async getLastVideo(header): Promise<number> {
-    const user = await this.bearerToken(header.authorization);
+  public async getLastVideo(token: string): Promise<number> {
+    const user = await this.bearerToken(token);
 
-    const info = await this.userRepository.findOne(
-      { id: user.id },
-      {
-        relations: ['last_video'],
-      },
-    );
+    const info = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.last_video', 'last_video')
+      .where('user.id = :id', { id: user.id })
+      .getOne();
 
     await this.logger.log('Get last_video');
+
     return info.last_video;
   }
 
-  public async lastVideo(body: FixLastVideo, headers): Promise<void> {
-    const user = await this.bearerToken(headers.authorization);
+  public async lastVideo(
+    { last_video }: FixLastVideo,
+    token: string,
+  ): Promise<void> {
+    const user = await this.bearerToken(token);
 
     await this.userRepository.update(
       { id: user.id },
-      { last_video: body.last_video },
+      { last_video: last_video },
     );
 
     await this.logger.log('Save last_video');
   }
 
-  private async bearerToken(bearerToken): Promise<any> {
+  private async generateToken(id: string, type: string): Promise<string> {
+    return this.jwtService.signAsync(
+      {
+        id: `${id}`,
+        type: type,
+      },
+      {
+        secret: process.env.ACCESS_JWT,
+        algorithm: 'HS256',
+        expiresIn: '24h',
+      },
+    );
+  }
+
+  private async bearerToken(bearerToken: string): Promise<any> {
     return await this.jwtService.verifyAsync(bearerToken.split(' ')[1]);
   }
 }

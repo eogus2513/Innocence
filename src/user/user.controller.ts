@@ -32,16 +32,18 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Get()
-  public async getLastVideo(@Headers() header): Promise<number> {
-    return await this.userService.getLastVideo(header);
+  public async getLastVideo(
+    @Headers('authorization') token: string,
+  ): Promise<number> {
+    return await this.userService.getLastVideo(token);
   }
 
   @UseGuards(JwtAccessGuard)
   @Put('last_video')
   public async FixLastVideo(
     @Body() body: FixLastVideo,
-    @Headers() headers,
+    @Headers('authorization') token: string,
   ): Promise<void> {
-    return await this.userService.lastVideo(body, headers);
+    return await this.userService.lastVideo(body, token);
   }
 }
