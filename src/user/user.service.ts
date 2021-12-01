@@ -43,7 +43,7 @@ export class UserService {
     id,
     password,
   }: LoginRequest): Promise<UserTokenResponse> {
-    const user = await this.userRepository.findOne({ id: id });
+    const user: User = await this.userRepository.findOne({ id: id });
     if (!user) {
       throw new NotFoundException('User Not Exist!');
     }

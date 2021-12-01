@@ -33,7 +33,7 @@ export class AdminService {
     id,
     password,
   }: LoginRequest): Promise<AdminTokenResponse> {
-    const admin = await this.adminRepository.findOne({ id: id });
+    const admin: Admin = await this.adminRepository.findOne({ id: id });
     if (!admin) {
       throw new NotFoundException('User Not Exist!');
     }
