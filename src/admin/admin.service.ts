@@ -6,15 +6,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admin } from '../entities/admin.entity';
+import { Admin } from './entity/admin.entity';
 import { Connection, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import * as moment from 'moment';
 import { AdminTokenResponse } from './dto/response/AdminTokenResponse.dto';
-import { Video } from '../entities/video.entity';
+import { Video } from '../video/entity/video.entity';
 import { LoginRequest } from './dto/request/AdminloginRequest.dto';
 import { addTitle } from './dto/request/addTitle.dto';
-import { Title } from '../entities/title.entity';
+import { Title } from '../title/entity/title.entity';
 import { addVideo } from './dto/request/addVideo.dto';
 
 @Injectable()
@@ -44,24 +43,13 @@ export class AdminService {
       throw new ForbiddenException();
     }
 
-    const access_token = await this.jwtService.signAsync(
-      {
-        id: id,
-        isAdmin: true,
-        access_exp: moment().hour(24).format('YYYY/MM/DD'),
-      },
-      {
-        secret: process.env.ACCESS_JWT,
-        expiresIn: `${process.env.ACCESS_EXP}s`,
-      },
-    );
     await this.logger.log('Login SUCCESS : ' + id);
 
-    return { access_token };
+    return { access_token: await this.generateToken(id, 'access') };
   }
 
-  public async addTitle({ name, subjectId }: addTitle, headers): Promise<void> {
-    const admin = await this.bearerToken(headers.authorization);
+  public async addTitle({ name, subjectId }: addTitle, token): Promise<void> {
+    const admin = await this.bearerToken(token);
 
     if (admin.isAdmin != true) {
       throw new ForbiddenException();
@@ -120,6 +108,20 @@ export class AdminService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  private async generateToken(id: string, type: string): Promise<string> {
+    return await this.jwtService.signAsync(
+      {
+        id: `${id}`,
+        type: type,
+      },
+      {
+        secret: process.env.ACCESS_JWT,
+        algorithm: 'HS256',
+        expiresIn: '24h',
+      },
+    );
   }
 
   private async bearerToken(bearerToken): Promise<any> {

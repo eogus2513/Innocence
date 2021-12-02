@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Title } from '../entities/title.entity';
+import { Title } from './entity/title.entity';
 import { Repository } from 'typeorm';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
 

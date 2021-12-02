@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Admin } from 'src/entities/admin.entity';
-import { Category } from 'src/entities/category.entity';
-import { Subject } from 'src/entities/subject.entity';
-import { User } from 'src/entities/user.entity';
-import { Video } from 'src/entities/video.entity';
-import { Title } from '../entities/title.entity';
+import { Admin } from 'src/admin/entity/admin.entity';
+import { Category } from 'src/title/entity/category.entity';
+import { Subject } from 'src/title/entity/subject.entity';
+import { User } from 'src/user/entity/user.entity';
+import { Video } from 'src/video/entity/video.entity';
+import { Title } from '../title/entity/title.entity';
 
 @Module({
   imports: [

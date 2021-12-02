@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Subject } from '../../../entities/subject.entity';
+import { Subject } from '../../../title/entity/subject.entity';
 
 export class addTitle {
   @IsString()
