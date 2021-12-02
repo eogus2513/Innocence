@@ -12,7 +12,7 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = process.env.PORT || 80;
+  const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
   console.log('server start! | ' + PORT);
 }
