@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subject } from './subject.entity';
-import { Video } from './video.entity';
+import { Video } from '../../video/entity/video.entity';
 import { Category } from './category.entity';
 
 @Entity()

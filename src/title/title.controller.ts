@@ -2,7 +2,7 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { TitleService } from './title.service';
 import { JwtAccessGuard } from '../middleware/guard/jwt-access.guard';
 import { TitleRequest } from './dto/request/TitleRequest.dto';
-import { Title } from '../entities/title.entity';
+import { Title } from './entity/title.entity';
 
 @Controller('title')
 export class TitleController {

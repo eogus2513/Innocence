@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Video } from '../entities/video.entity';
+import { Video } from './entity/video.entity';
 import { videoRequest } from './dto/request/VideoRequest.dto';
 
 @Injectable()

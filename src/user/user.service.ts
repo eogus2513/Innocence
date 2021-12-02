@@ -5,10 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
+import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Video } from '../entities/video.entity';
+import { Video } from '../video/entity/video.entity';
 import { compare, hash } from 'bcrypt';
 import { UserTokenResponse } from './dto/response/UserTokenResponse.dto';
 import { SignUpRequest } from './dto/request/UserSignUpRequest.dto';
@@ -86,7 +86,7 @@ export class UserService {
   }
 
   private async generateToken(id: string, type: string): Promise<string> {
-    return this.jwtService.signAsync(
+    return await this.jwtService.signAsync(
       {
         id: `${id}`,
         type: type,

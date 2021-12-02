@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Title } from './title.entity';
-import { User } from './user.entity';
+import { Title } from '../../title/entity/title.entity';
+import { User } from '../../user/entity/user.entity';
 
 @Entity()
 export class Video {

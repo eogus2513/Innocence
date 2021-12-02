@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Title } from '../../../entities/title.entity';
+import { Title } from '../../../title/entity/title.entity';
 
 export class addVideo {
   @IsString()

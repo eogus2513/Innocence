@@ -5,7 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Video } from './video.entity';
+import { Video } from '../../video/entity/video.entity';
 
 @Entity()
 export class User {

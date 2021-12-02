@@ -27,9 +27,9 @@ export class AdminController {
   @Post('add_title')
   public async addTitle(
     @Body() body: addTitle,
-    @Headers() headers,
+    @Headers('authorization') token,
   ): Promise<void> {
-    await this.adminService.addTitle(body, headers);
+    await this.adminService.addTitle(body, token);
   }
 
   @UseGuards(JwtAccessGuard)
