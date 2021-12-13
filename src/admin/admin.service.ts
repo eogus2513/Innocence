@@ -60,8 +60,6 @@ export class AdminService {
       .where('subject.subjectId = :id', { id: subjectId })
       .getRawOne();
 
-    console.log();
-
     if (!subject) {
       throw new BadRequestException('Invalid subjectId value');
     }
