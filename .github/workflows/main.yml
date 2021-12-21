@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  CD:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Docker Hub Login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and Push
+        env:
+          DB_HOST: ${{ secrets.DATABASE_HOST }}
+          DB_PORT: ${{ secrets.DATABASE_PORT }}
+          DB_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DATABASE_DATABASE }}
+          ACCESS_JWT: ${{ secrets.ACCESS_JWT }}
+          
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: eogus2513/tby:latest
