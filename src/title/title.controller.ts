@@ -16,7 +16,9 @@ export class TitleController {
 
   @UseGuards(JwtAccessGuard)
   @Get('category/:id')
-  public async categoryGetTitle(@Param() params: TitleRequest) {
+  public async categoryGetTitle(
+    @Param() params: TitleRequest,
+  ): Promise<Title[]> {
     return await this.titleService.categoryGetTitle(params);
   }
 
